@@ -14,7 +14,7 @@ tween = {}
 
 -- private stuff
 
-local tweens = setmetatable({}, {__mode = "k"})
+local tweens = {}
 
 local function isCallable(f)
   local tf = type(f)
@@ -105,9 +105,6 @@ local function checkStartParams(time, subject, target, options, callback)
 end
 
 local function newTween(time, subject, target, options, callback, args)
-  -- Don't allow 0 duration tweens
-  if time == 0 then time = 0.001 end
-
   local self = {
     time = time,
     subject = subject,
@@ -224,7 +221,7 @@ local function pathFactory(subject, values)
         
         __newindex = function(table,k,v)
             if k == 't' then
-                for i,key in ipairs(keys) do
+                for i,key in pairs(keys) do
                     subject[key] = pathFunc(v,key)
                 end
             else
@@ -247,7 +244,8 @@ end
 -- c = change == ending - beginning
 -- d = duration == running time. How much time has passed *right now*
 
-local pow, sin, cos, pi, sqrt, abs, asin = math.pow, math.sin, math.cos, math.pi, math.sqrt, math.abs, math.asin
+local pow = function(x, y) return x^y end
+local sin, cos, pi, sqrt, abs, asin = math.sin, math.cos, math.pi, math.sqrt, math.abs, math.asin
 
 -- linear
 local function linear(t, b, c, d) return c * t / d + b end
@@ -493,26 +491,25 @@ tween.loop =
 -- public functions
 
 function tween.start(time, subject, target, options, callback, ...)
-  if time == 0 then time = 0.001 end
-  
   checkStartParams(time, subject, target, options, callback)
   return newTween(time, subject, target, options, callback, {...})
 end
 
 function tween.sequence(...)
-
-    assert(arg.n > 0, "a sequence must consist of at least one tween")
+    local n = select('#', ...)
+    local arg = {...}
+    assert(n > 0, "a sequence must consist of at least one tween")
 
     local head = arg[1]
-    local tail = arg[arg.n]
+    local tail = arg[n]
 
-    for i,id in ipairs(arg) do
+    for i,id in pairs(arg) do
         local tw = tweens[id]
         
         tw.head = head
         tw.tail = tail
 
-        if i < arg.n then
+        if i < n then
             tw.next = arg[i+1]
         end
 
@@ -526,7 +523,6 @@ function tween.sequence(...)
 end
 
 function tween.path(time, subject, target, options, callback, ...)
-
   -- need to check that target is an array and contains valid keys
   return newTween(time, pathFactory(subject, target) , {t=1}, options, callback, {...})
 end
@@ -572,7 +568,7 @@ function tween.stop(id)
 end
 
 function tween.stopAll()
-  tweens = setmetatable({}, {__mode = "k"})
+  tweens = {}
 end
 
 function tween.hasExpired(id)
@@ -591,5 +587,13 @@ function tween.update(dt)
     if hasExpiredTween(t) then table.insert(expired, t) end
   end
   for i=1, #expired do finishTween(expired[i]) end
+end
+
+function tween.count()
+  local c = 0
+  for _,v in pairs(tweens) do
+    c = c + 1
+  end
+  return c
 end
 

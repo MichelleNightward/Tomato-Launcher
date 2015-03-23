@@ -1,4 +1,8 @@
--- This file is loaded before any user scripts, removing unsafe environment functions
+------------------------------------------------
+-- Import common libraries into global namespace
+------------------------------------------------
+
+json = require("dkjson")
 
 ------------------------------------------------
 -- Block out any dangerous or insecure functions

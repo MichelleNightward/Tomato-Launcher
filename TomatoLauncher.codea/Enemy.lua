@@ -43,10 +43,12 @@ function Enemy:create()
             local enemyX = math.random(50, WIDTH-50)
             local enemyY = math.random(150, HEIGHT-50)
             local enemyNum = math.random(1,3)
+            local enemyInsult = Insults:generateInsult()
         
             enemy = {enX = enemyX,
                     enY = enemyY,
-                    enemyNum = enemyNum}
+                    enemyNum = enemyNum,
+                    enemyInsult = enemyInsult}
             table.insert(enemyList, enemy)
             enemyCount = enemyCount + 1
             print "enemy test"
@@ -79,16 +81,22 @@ function Enemy:update()
 end
 
 function Enemy:draw()
+    textWrapWidth(85)
     if firstShot == true then
         Enemy:create()
         for k,v in pairs(enemyList) do
+            sprite("Planet Cute:SpeechBubble", v.enX + 90, v.enY + 90)  
+            text(v.enemyInsult, v.enX + 85, v.enY + 75)
             if v.enemyNum == 1 then
                 sprite("Project:Enemy1",v.enX,v.enY)
+                --sprite("Planet Cute:SpeechBubble", v.enX + 90, v.enY + 90)  
+                --text(v.enemyInsult, v.enX + 85, v.enY + 85)
             elseif v.enemyNum == 2 then
                 sprite("Project:Enemy2",v.enX,v.enY)
             elseif v.enemyNum == 3 then
                 sprite("Project:Enemy3",v.enX,v.enY)
             end
+            
         end
     end
 end

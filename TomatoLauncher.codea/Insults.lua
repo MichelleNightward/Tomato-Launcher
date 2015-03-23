@@ -1,3 +1,5 @@
+Insults = class()
+
 ColumnOne = {
 
 "artless",
@@ -53,7 +55,7 @@ ColumnOne = {
 
 }
 
-ColunmTwo = {
+ColumnTwo = {
 
 "base-court",
 "bat-fowling",
@@ -162,3 +164,9 @@ ColumnThree = {
 "wagtail",
 
 }
+
+function Insults:generateInsult()
+    insult = ColumnOne[math.random(1,50)] .. " " .. ColumnTwo[math.random(1,50)] .. " " .. ColumnThree[math.random(1,50)]
+    print (insult)
+    return insult
+end
