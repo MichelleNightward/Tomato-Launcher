@@ -165,6 +165,7 @@ ColumnThree = {
 
 }
 
+-- generate random three part insult
 function Insults:generateInsult()
     insult = ColumnOne[math.random(1,50)] .. " " .. ColumnTwo[math.random(1,50)] .. " " .. ColumnThree[math.random(1,50)]
     print (insult)

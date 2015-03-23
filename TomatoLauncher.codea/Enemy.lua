@@ -4,6 +4,7 @@ function Enemy:init(x)
     -- you can accept and set parameters here
 end
 
+--handle how many enemies can appear based on score
 function Enemy:max()
     if score < 100 then 
         enemyMax = 5
@@ -22,37 +23,27 @@ function Enemy:max()
     end
 end
 
-function Enemy:wait(continue, wait)
-    continue = false
-    waitTime = wait
-    local timeTo = os.time() + 1
-    while os.time() < timeTo do wait = wait - 1 end
-    if wait == 0 then 
-        continue = true
-    end
-    return continue
-end
 
-
-
+--add an instance of enemy to enemy table
 function Enemy:create()
         if enemyCount < enemyMax then
-            local enemyX = math.random(50, WIDTH-50)
-            local enemyY = math.random(150, HEIGHT-50)
-            local enemyNum = math.random(1,3)
-            local enemyInsult = Insults:generateInsult()
+            local enemyX = math.random(50, WIDTH-50) --randomly generate x position
+            local enemyY = math.random(150, HEIGHT-50) --randomly generate y position
+            local enemyNum = math.random(1,3) --randomly generate sprite
+            local enemyInsult = Insults:generateInsult() --randomly generate enemy's insult
         
             enemy = {enX = enemyX,
                     enY = enemyY,
                     enemyNum = enemyNum,
                     enemyInsult = enemyInsult}
-            table.insert(enemyList, enemy)
-            enemyCount = enemyCount + 1
+            table.insert(enemyList, enemy) --add enemy to table
+            enemyCount = enemyCount + 1 -- keep track of how many enemies there are so as not to exceed max
             print "enemy test"
             
         end
 end
 
+--if tomato collides with enemy then enemy instance is removed from table
 function Enemy:update()
     for k,v in pairs(enemyList) do
 
@@ -72,6 +63,7 @@ function Enemy:update()
     --print "update test"
 end
 
+--an enemy is drawn with one of three possible sprites
 function Enemy:draw()
     textWrapWidth(85)
     if firstShot == true then

@@ -25,9 +25,9 @@ end
 
 -- This function gets called once every frame
 function draw()
-    Enemy:max()
+    Enemy:max() --put enemy amount monitoring in action
     if menuVisable == false and ballIsMoving == false then
-        ballPos = vec2(WIDTH / 2, 71)
+        ballPos = vec2(WIDTH / 2, 71) --if menu is gone and tomato isnt moving then tomato position is reset
     end
     if ballPos.x == x2 and
     ballPos.y == y2 then
@@ -51,15 +51,15 @@ function draw()
 end
 
 function touched(touch)
-    if touch.state ~= ENDED and menuVisable then
+    if touch.state ~= ENDED and menuVisable then --set game in motion with one tap
         menuVisable = false
         gameStart = true
     elseif touch.state == BEGAN and
-    ((ballPos.x == x2 and ballPos.y == y2) or ballPos == vec2(WIDTH / 2, 71))and gameStart then
+    ((ballPos.x == x2 and ballPos.y == y2) or ballPos == vec2(WIDTH / 2, 71))and gameStart then -- second touch shoots first tomato
         print "touch test"
         ballIsMoving = true
         firstShot = true
-        x2 = CurrentTouch.x
+        x2 = CurrentTouch.x--sets trajectory of tomato
         y2 = CurrentTouch.y
     end
     
