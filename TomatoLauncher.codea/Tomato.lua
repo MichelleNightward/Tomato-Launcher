@@ -11,7 +11,6 @@ end
 function Ball:draw()
     fill(253, 255, 0, 255)
     noStroke()
-    --ellipse(ballPos.x, ballPos.y, 2 * ballRadius)  
     sprite("Documents:Tomato", ballPos.x, ballPos.y) 
     
 end

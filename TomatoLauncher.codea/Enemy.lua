@@ -2,7 +2,6 @@ Enemy = class()
 
 function Enemy:init(x)
     -- you can accept and set parameters here
-    --self.enemyList = {}
 end
 
 function Enemy:max()
@@ -37,9 +36,7 @@ end
 
 
 function Enemy:create()
-    --if create then
         if enemyCount < enemyMax then
-    -- Make sure we don't emit more than maxbubbles
             local enemyX = math.random(50, WIDTH-50)
             local enemyY = math.random(150, HEIGHT-50)
             local enemyNum = math.random(1,3)
@@ -54,12 +51,9 @@ function Enemy:create()
             print "enemy test"
             
         end
-    --end
-    --Enemy:wait(create,3)
 end
 
 function Enemy:update()
-    -- Loop through bubbles
     for k,v in pairs(enemyList) do
 
         if ballPos.x < (v.enX + enemyW / 2) + 10 and 
@@ -69,9 +63,7 @@ function Enemy:update()
             Ball:splatDraw(v.enX, v.enY)
             -- Remove it from the table
             enemyList[k] = nil
-            
-            -- Reduce our bubble count
-            --  (we can emit more now!)
+
             enemyCount = enemyCount - 1
             score = score + 10
             ballIsMoving = false
@@ -89,8 +81,6 @@ function Enemy:draw()
             text(v.enemyInsult, v.enX + 85, v.enY + 75)
             if v.enemyNum == 1 then
                 sprite("Project:Enemy1",v.enX,v.enY)
-                --sprite("Planet Cute:SpeechBubble", v.enX + 90, v.enY + 90)  
-                --text(v.enemyInsult, v.enX + 85, v.enY + 85)
             elseif v.enemyNum == 2 then
                 sprite("Project:Enemy2",v.enX,v.enY)
             elseif v.enemyNum == 3 then
